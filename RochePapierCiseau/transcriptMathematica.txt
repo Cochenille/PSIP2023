@@ -1,0 +1,13 @@
+
+DynamicModule[{state = "Stop", predict = "" &, img = "", timer = 0},
+ Column [{
+Dynamic [
+If [state = != "Stop", img = CurrentImage []];
+If [ ValueQ[rpsdata], rpsdata = {}];
+If [ ! MemberQ[{"stop", "Watch"}, state] && (AbsoluteTime [] timer > 0.5), AppendTo [rpsdata, img timer AbsoluteTime []]; Column[
+→ state];
+{Magnify [img, 2], Pane [If [Head [predict] != ClassifierFunction, Row [{"Data", Length [rpsdata]}], Style [predict [img], 40]], (300, 80}]}], Synchronous Updating → False],
+(**)
+Button [ "Reset", rpsdata = {}; predict = "" &],
+Row [{"Capture: ", RadioButtonBar [Dynamic [state], {"Rock", "Paper", "Scissors", "Stop", "Watch"}]}], Button ["Train", predict = Classify [rpsdata], Method→ "Queued"]
+}]
